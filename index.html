@@ -131,59 +131,89 @@ twitter: [@aronysidoro](https://twitter.com/AronYsidoro)
 
 slideshow at: [https://github.com/aronysidoro/sms-from-client-to-phone](https://github.com/aronysidoro/sms-from-client-to-phone)
 ---
+layout:false
 ## About the topic?
+
+- Inspiration
+
+## Stack?
+
+- AngularJs
+
+- Django (python)
+
+- PostgreSQL
+
+- Twilio (python)
+
+- Redis
+
+- [django-socket-redis](https://github.com/jrief/django-websocket-redis)
+---
+.center[![](sms-to-phone-high-level.png)]
 ---
 ![](diagram.png)
 ---
-![](omg.jpeg)
+.center[![](omg.jpeg)]
 ---
-.left-column[
-  ## AngularJs
-  ### - view
-]
-.right-column[
-index.html
+### view.html
 
 ```xml
-<div ng-controller="GuestMessageCtrl">
+<div ng-controller="guestMessageCtrl">
   <form>
-    <div class="form-group">
-      <input placeholder="Enter message here..." type="text" ng-model="body"></input>
-    </div>
-    <div>
-      <button type="submit" ng-click="" value="submit"/>
-      Send
-      </button>
-    </div>
+    <input ng-model="body"></input>
+    <button type="submit" ng-click="submitMessage()" id="submit"/>
+    Send
+    </button>
   </form>
 </div>
 ```
 ---
-.left-column[
-  ## AngularJs
-  ### - view
-  ### - controller
-]
-.right-column[
-index.html
+### controller.js
 
-```xml
-<div ng-controller="GuestMessageCtrl">
-  <form>
-    <div class="form-group">
-      <input placeholder="Enter message here..." name="messageForm" type="text" class="form-control new-message-input" ng-model="body" id="text_message"></input>
-    </div>
-    <div>
-      <button class="btn btn-success btn-xs btn-block" type="submit" id="submit"/>
-      Send
-      </button>
-    </div>
-  </form>
-</div>
+```javascript
+  conciergeControllers.controller('GuestMessageCtrl',
+    ['$scope', 'Message',
+  $scope.submitMessage = function(ws4redis, body) {
+    var message = new Message({
+      body: $scope.body
+      to: $scope.to,
+      from: $scope.from,
+    });
+  }
+  message.$save();
+  ]);
 ```
 
-controller.js
-```js
+### services.js
+
+```javascript
+angular.module('conciergeApp.services', ['ngResource'])
+    .factory('GuestMessages', function($resource) {
+        return $resource('/api/guest-messages/:id/');
+    });
+```
+---
+### serializers.py
+```python
+class MessageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Message
+        fields = ('id', 'body', 'to', 'from',)
+```
+
+### views.py
+```python
+class MessageListCreateAPIView(generics.ListCreateAPIView):
+    "All Messages records for a single Hotel."
+    
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def list(self, request, *args, **kwargs):
+        messages = Message.objects.filter(guest__hotel=request.user.profile.hotel)
+        serializer = MessageSerializer(messages, many=True)
+        return Response(serializer.data)
 ```
 ---
 layout: false
