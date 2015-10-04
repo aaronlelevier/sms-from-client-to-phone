@@ -124,11 +124,67 @@ name: inverse
 layout: true
 class: center, middle, inverse
 ---
-#remark
-[ri-mahrk]
-.footnote[Go directly to [project site](https://github.com/gnab/remark)]
+#SMS from Client to Phone
+By Aaron Lelevier
+
+twitter: [@aronysidoro](https://twitter.com/AronYsidoro)
+
+slideshow at: [https://github.com/aronysidoro/sms-from-client-to-phone](https://github.com/aronysidoro/sms-from-client-to-phone)
 ---
-## What is it and why should I be using it?
+## About the topic?
+---
+![](diagram.png)
+---
+![](omg.jpeg)
+---
+.left-column[
+  ## AngularJs
+  ### - view
+]
+.right-column[
+index.html
+
+```xml
+<div ng-controller="GuestMessageCtrl">
+  <form>
+    <div class="form-group">
+      <input placeholder="Enter message here..." type="text" ng-model="body"></input>
+    </div>
+    <div>
+      <button type="submit" ng-click="" value="submit"/>
+      Send
+      </button>
+    </div>
+  </form>
+</div>
+```
+---
+.left-column[
+  ## AngularJs
+  ### - view
+  ### - controller
+]
+.right-column[
+index.html
+
+```xml
+<div ng-controller="GuestMessageCtrl">
+  <form>
+    <div class="form-group">
+      <input placeholder="Enter message here..." name="messageForm" type="text" class="form-control new-message-input" ng-model="body" id="text_message"></input>
+    </div>
+    <div>
+      <button class="btn btn-success btn-xs btn-block" type="submit" id="submit"/>
+      Send
+      </button>
+    </div>
+  </form>
+</div>
+```
+
+controller.js
+```js
+```
 ---
 layout: false
 .left-column[
