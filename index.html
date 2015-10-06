@@ -124,7 +124,7 @@ name: inverse
 layout: true
 class: center, middle, inverse
 ---
-# SMS from Client to Phone
+# Round trip of an SMS from Client to Phone
 By Aaron Lelevier
 
 twitter: [@aronysidoro](https://twitter.com/AronYsidoro)
@@ -132,13 +132,14 @@ twitter: [@aronysidoro](https://twitter.com/AronYsidoro)
 slideshow at: [https://github.com/aronysidoro/sms-from-client-to-phone](https://github.com/aronysidoro/sms-from-client-to-phone)
 ---
 layout:false
+
 ## About the topic?
 
 - Inspiration
 
-  - [what-happens-when](https://github.com/alex/what-happens-when)
-
 ## Stack?
+
+- jQuery
 
 - AngularJs
 
@@ -278,9 +279,28 @@ conciergeControllers.controller('GuestMessageCtrl',
 ### view.html
 
 ```xml
+<div ng-controller="guestMessageCtrl">
+  <form>
+    <input ng-model="body" id="text_message"></input>
+    <button type="submit" ng-click="submitMessage()" id="submit"/>
+    Send
+    </button>
+  </form>
+</div>
+
 <ol ng-repeat="message in messages">
     <li>[[ message.body ]]</li>
 </ol>
+
+<script type="text/javascript">
+    $("#text_message").keydown(function(event) {
+        if (event.keyCode === 13) {
+            angular.element('#GuestMessageCtrl').scope().submitMessage(
+                ws4redis, $('#text_message').val());
+            angular.element('#GuestMessageCtrl').scope().$apply();
+        }
+    });
+</script>
 ```
 ---
 name: last-page
