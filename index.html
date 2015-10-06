@@ -136,6 +136,8 @@ layout:false
 
 - Inspiration
 
+  - [what-happens-when](https://github.com/alex/what-happens-when)
+
 ## Stack?
 
 - AngularJs
@@ -152,8 +154,10 @@ layout:false
 
 - [django-websocket-redis](https://github.com/jrief/django-websocket-redis)
 ---
-![](diagram.png)
+template: inverse
+![](sms-to-phone-high-level.png)
 ---
+layout: false
 ### view.html
 
 ```xml
@@ -255,7 +259,7 @@ angular.module('conciergeApp.services', ['ngResource'])
 
 ### controller.js
 
-```
+```javascript
 conciergeControllers.controller('GuestMessageCtrl',
     ['$scope', 'Message', function($scope, Message) {
 
@@ -269,6 +273,14 @@ conciergeControllers.controller('GuestMessageCtrl',
         });
     }
 ]);
+```
+---
+### view.html
+
+```xml
+<ol ng-repeat="message in messages">
+    <li>[[ message.body ]]</li>
+</ol>
 ```
 ---
 name: last-page
